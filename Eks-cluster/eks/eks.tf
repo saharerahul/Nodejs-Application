@@ -1,3 +1,5 @@
+#creating role for EKS-cluster
+
 resource "aws_iam_role" "master" {
   name = "ed-eks-master"
 
@@ -17,6 +19,8 @@ resource "aws_iam_role" "master" {
 POLICY
 }
 
+# Attaching policy to role
+
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.master.name
@@ -31,6 +35,9 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
   role       = aws_iam_role.master.name
 }
+
+
+#creating role for nodes
 
 resource "aws_iam_role" "worker" {
   name = "ed-eks-worker"
@@ -76,6 +83,9 @@ EOF
 
 }
 
+
+#Attaching policy to node role
+
 resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.worker.name
@@ -116,7 +126,8 @@ resource "aws_iam_instance_profile" "worker" {
   role       = aws_iam_role.worker.name
 }
 
-###############################################################################################################
+# EKS-Cluster
+
 resource "aws_eks_cluster" "eks" {
   name = "ed-eks-01"
   role_arn = aws_iam_role.master.arn
@@ -130,12 +141,11 @@ resource "aws_eks_cluster" "eks" {
     aws_iam_role_policy_attachment.AmazonEKSServicePolicy,
     aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
     aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
-    #aws_subnet.pub_sub1,
-    #aws_subnet.pub_sub2,
   ]
 
 }
-#################################################################################################################
+
+# creating node-group
 
 resource "aws_eks_node_group" "backend" {
   cluster_name    = aws_eks_cluster.eks.name
@@ -166,8 +176,6 @@ resource "aws_eks_node_group" "backend" {
     aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
-    #aws_subnet.pub_sub1,
-    #aws_subnet.pub_sub2,
   ]
 }
 

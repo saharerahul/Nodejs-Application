@@ -2,10 +2,6 @@ variable "location" {
   default = "ap-south-1"
 }
 
-variable "os_name" {
-  default = "ami-09ba48996007c8b50"
-}
-
 variable "key" {
   default = "task"
 }
@@ -37,7 +33,9 @@ variable "subent_az-2" {
 
 variable "ingress_ports" {
   type = list(number)
-  default = [ 443, 22, 8080, 9090, 3000, 9000, 9100, 9115 ]
+  default = [ 443, 22, 8080, 9090, 3000, 9000, 9100, 9115, 30000, 32767 ]
 }
+
+ 
 
 
