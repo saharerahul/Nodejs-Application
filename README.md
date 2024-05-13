@@ -7,7 +7,10 @@ STEP.1-CREATE DOCKERFILE AND RUN APPLICATION ON DOCKER-COMPOSE
 . Install Docker and Docker-compose on server.
 
 .Create dockerfile with name “Dockerfile” and creat docker-compose.yaml file and call
-  Docker file in docker-compose file
+  Docker file in docker-compose file.
+
+ NOTE- to run docker-compose make sure your docker and docker-compose version should be same .
+       
   
 . A- hit command docker-compose build           ------to build docker images
 
