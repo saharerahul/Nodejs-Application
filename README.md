@@ -63,6 +63,8 @@ STEP.4-CREATE CI USING JENKINS TO BUILD AND PUSH DOCKER IMAGES TO DOCKER HUB.
    
       . Adding Docker Hub credentials: Go to "Manage Jenkins" >> "Credentials" >> "Add Credentials" >> "Global credentials" >> add.
 
+      . i am call source code  and Dockerfile in jenkins pipeline form my git-hub repository name "saharerahul/Nodejs-Application" .
+
       . Now configure job and write Jenkins pipeline to build and push Docker image.
 
       . Successfully build Docker images and push Docker image named   "rahulsahare/nodejs-app:latest"  
