@@ -9,38 +9,35 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                sh "docker build -t rahulsahare/nodejs-app:latest -f DOCKER/Dockerfile ."    
+                sh "docker build -t rahulsahare/nodejs-app:latest -f DOCKER/Dockerfile ."
             }
-        }        
+        }
         stage('Docker Push Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {  
-                        sh "docker push rahulsahare/nodejs-app:latest"            
+                        sh "docker push rahulsahare/nodejs-app:latest"
                     }
                 }
             }
         }
-
-        
+        stage('Deploy to Container') {
+            steps {
+                sh '''
+                docker run -d --name nodejs-app-container \
+                  -p 3000:3000 \
+                  rahulsahare/nodejs-app:latest
+                '''
+            }
+        }
     }
 
     post {
         success {
-            echo 'image pushed successfully!'
+            echo 'Image pushed and deployed successfully!'
         }
         failure {
-            echo 'failed to push image!'
-        }
-    }
-}
-
-    post {
-        success {
-            echo 'image pushed successfully!'
-        }
-        failure {
-            echo 'failed to push image!'
+            echo 'Failed to push image or deploy!'
         }
     }
 }
